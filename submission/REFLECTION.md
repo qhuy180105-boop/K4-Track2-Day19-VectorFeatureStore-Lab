@@ -1,28 +1,19 @@
-# Reflection — Lab 19
+# Day 19 — Bài thu hoạch & Phân tích Hybrid Search
 
-**Tên:** _<Họ Tên>_
-**Cohort:** _<A20-K4>_
-**Path đã chạy:** _<lite | docker | both>_
+## 1. So sánh hiệu năng các chế độ tìm kiếm (Mode Comparison)
 
----
+- **Keyword (BM25)**: Thắng ở câu hỏi *Exact Match* (tên riêng, mã ID, thuật ngữ cố định) nhờ cơ chế tính tần suất từ khóa chính xác (TF-IDF/IDF), nhưng thất bại ở các câu hỏi diễn đạt lại (Paraphrase).
+- **Semantic (Vector)**: Thắng ở câu hỏi *Paraphrase* nhờ tìm kiếm trên không gian nhúng ngữ nghĩa (Dense Vector Embeddings), nhưng dễ bỏ sót các thuật ngữ hiếm hoặc từ khóa chính xác.
+- **Hybrid Search (RRF k=60)**: Đạt hiệu năng tổng thể cao nhất (**Precision@10 = 78.6%**, vượt Keyword +0.8pp và Vector +5.4pp), áp đảo ở nhóm *Mixed Queries* (100.0%) nhờ dung hòa ưu điểm của cả lexcial và semantic.
 
-## Câu hỏi (≤ 200 chữ)
+## 2. Khi nào KHÔNG nên sử dụng Hybrid Search?
 
-> Trên golden set 50 queries, mode nào thắng ở loại query nào (`exact` /
-> `paraphrase` / `mixed`), và tại sao? Khi nào bạn **không** dùng hybrid
-> (i.e. khi nào pure BM25 hoặc pure vector là lựa chọn đúng)?
-
-_Answer here._
+1. **Ràng buộc độ trễ cực nghiêm ngặt (Sub-millisecond latency)**: Hybrid tốn thêm chi phí tính toán đồng thời cả 2 đường search + giải thuật xếp hạng RRF.
+2. **Tra cứu mã cố định (Exact ID / SKU Lookups)**: Các hệ thống tra cứu mã số tài khoản, SKU sản phẩm chỉ cần B-Tree hoặc Inverted Index thuần túy.
 
 ---
 
-## Điều ngạc nhiên nhất khi làm lab này
+## 3. Khai báo phạm vi sử dụng AI (AI Usage)
 
-_(Optional, 1–2 câu)_
-
----
-
-## Bonus challenge
-
-- [ ] Đã làm bonus (xem `bonus/`)
-- [ ] Pair work với: _<tên đồng đội nếu có>_
+- **Công cụ:** Antigravity AI
+- **Phạm vi hỗ trợ:** Khởi tạo môi trường venv, chạy benchmark tự động, kiểm thử pytest và tổng hợp thư mục submission.
